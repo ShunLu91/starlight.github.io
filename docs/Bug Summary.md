@@ -36,7 +36,7 @@ nav_order: 2
 
 1. 环境安装：ModuleNotFoundError: No module named 'OpenEXR'
    1. 解决：建议使用如下步骤安装该软件包。
-   2. ```Shell
+   2. ```bash
       apt-get update
       apt-get install libopenexr-dev
       export CFLAGS="-I/Users/USERNAME/homebrew/include/OpenEXR -std=c++11"
@@ -50,7 +50,7 @@ nav_order: 2
    4. 可能出现的问题2：fatal error: 'ImathBox.h' file not found
       1. 解决：需要按照如下方式设置编译用的std
       2. 引用：https://github.com/google-research/kubric/issues/19
-   5. ```Shell
+   ```bash
       export CFLAGS="-I/Users/USERNAME/homebrew/include/OpenEXR -std=c++11"
       export LDFLAGS="-L/Users/USERNAME/homebrew/lib"
       pip install OpenEXR
@@ -98,7 +98,7 @@ nav_order: 2
 
    4. 解决：上述问题主要由于3d deconv中的output_padding=1导致，因此将其设为0后，手动对输出结果进行补0即可，前向传播代码修改如下：
 
-```Python
+```python
 # 报错代码
 # conv5 = F.relu(self.conv5(conv4) + self.redir2(conv2), inplace=True)
 # conv6 = F.relu(self.conv6(conv5) + self.redir1(x), inplace=True)
@@ -132,7 +132,7 @@ conv6 = FMish(y + self.redir1(x))
       1. ![img](https://bytedancecampus1.feishu.cn/space/api/box/stream/download/asynccode/?code=YzcxZDQzZTkxMTNmOTYyZTJmNDA5YjQ5ZDU2N2Q5M2NfalR6dDg1clFnSzZqc25iUTNhZURDVGY2WEw5bmZSNHBfVG9rZW46UHA3aWJzaG4zb0V4dm54UzY0cGNETVdibjlmXzE2Nzg5ODI4MTg6MTY3ODk4NjQxOF9WNA)
    3. 解决：前向传播时可以明确第一维为0因此无需判断，直接使用正常索引即可，代码修改如下
 
-```Python
+```python
 pred2_s4 = F.upsample(pred2_s4 * 8, [left.size()[2], left.size()[3]], mode='bilinear', align_corners=True)
 # pred2_s4 = torch.squeeze(pred2_s4, 1) # 报错代码
 pred2_s4 = pred2_s4[:, 0, :, :] # 正确代码
@@ -169,7 +169,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
    1. ![img](https://bytedancecampus1.feishu.cn/space/api/box/stream/download/asynccode/?code=ZTU2NzU2NmE5ODNmMTZhY2NmMTU3NTIzMzAxNzkxNDRfN2xCZk9aM2JEWGtkcXZoeFNjaldBTE5HV0hEaFJzNVBfVG9rZW46SDZiSWJCZDFEb1diTmV4WUdjS2NoMkw5bmhiXzE2Nzg5ODI4MTg6MTY3ODk4NjQxOF9WNA)
 
    2. 解决：该问题可能源于不同Pytorch版本对除法的处理不一致。因此，将所有Tensor转为数值即可。
-   3. ```Python
+   3. ```python
       input_size = []
       for _size in input_size_ori:
           if torch.is_tensor(_size):
@@ -181,7 +181,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
    1. ![img](https://bytedancecampus1.feishu.cn/space/api/box/stream/download/asynccode/?code=ZmFkYTU1NzI3NjI4NzlhZTAzN2M1NThiNmFlZGRiMDFfNzhWZzNHVDZiMktpdFphc01lQU90UzZRZFJBTExuaG5fVG9rZW46S2RGQWJ0cmRPb2RHREh4M0d4Z2N0VnpvblNkXzE2Nzg5ODI4MTg6MTY3ODk4NjQxOF9WNA)
 
    2. 解决：调试发现原因在于无法识别自定义的模块MemoryEfficientSwish，该模块是一个激活函数，可以直接跳过。因此，改写tensorboard文件夹下的_pytorch_graph.py文件设置跳过该函数即可。
-   3. ```Python
+   3. ```python
       class NodePyOP(NodePy):
           def __init__(self, node_cpp):
               super(NodePyOP, self).__init__(node_cpp, methods_OP)
@@ -208,7 +208,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
       2. 将无法识别的Conv2dStaticSamePadding()模块改成可以识别的情况。即原始的Conv2dStaticSamePadding()是继承了nn.Conv2d，将其改为nn.Module即可，然后检查定义中需要修改的地方。推荐使用此方案。
    4. 使用方案2修改后的代码对比如下所示：
       1. 原始代码，剪枝时无法识别以下模块：
-         1. ```Python
+         ```python
             class Conv2dStaticSamePadding(nn.Conv2d):
                 """2D Convolutions like TensorFlow's 'SAME' mode, with the given input image size.
                    The padding mudule is calculated in construction function, then used in forward.
@@ -236,7 +236,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
                     return x
             ```
       2.  修改后的代码，剪枝时可自动识别：
-         1. ```Python
+      ```python
             class Conv2dStaticSamePadding(nn.Module):
                 """2D Convolutions like TensorFlow's 'SAME' mode, with the given input image size.
                    The padding mudule is calculated in construction function, then used in forward.
@@ -284,7 +284,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
       1. ![img](https://bytedancecampus1.feishu.cn/space/api/box/stream/download/asynccode/?code=ODA4ZGY4Yjc4OGNiNDc1NmM2YzRmN2NkMmEwMzBlNWZfemRPZGZWanlqNVJRMGhuWDF4aWVBZmZZVllvOWxpRGVfVG9rZW46WmtmZ2JRcExFb3dReEd4V2RTYmN3QmlabnJmXzE2Nzg5ODI4MTg6MTY3ODk4NjQxOF9WNA)
 2. pycuda._driver.LogicError: cuMemcpyHtoDAsync failed: invalid argument
    1. 问题：该错误由于初始化ModelSpeedupTensorRT设置的input_shape和推理时不一致所导致。
-   2. ```Python
+   ```python
       engine = ModelSpeedupTensorRT(
           model,
           input_shape,
@@ -319,7 +319,7 @@ pred1_s2 = pred1_s2[:, 0, :, :]
 
    2. 原因：torch.squeeze压缩维度时，需要判断该维度是否为1。若判断成功则会在ONNX模型中引入IF节点，导致TensorRT转换不成功。
    3. 解决：如下代码所示，不使用squeeze函数，直接使用切片函数即可。
-   4. ```Python
+   ```python
       # 下方代码会引发上述错误
       # return fvl, costl.squeeze(1)
       # 修改为以下代码即可
