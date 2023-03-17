@@ -1,6 +1,22 @@
-# Manually export your pruned network
+---
+layout: default
+title: Manually Export
+nav_order: 3
+---
 
-1. Load your pre-trained network and define the pruner to automatically wrap modules with mask.
+
+# Manually export your pruned network
+{: .no_toc }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
+## Load your pre-trained network and define the pruner to automatically wrap modules with mask.
 ```python
     # get YourPretarinedNetwork and load pre-trained weights for it
     model = YourPretarinedNetwork(args).to(device)
@@ -18,7 +34,7 @@
     )
 ```
 
-2. Generate an `inplace_dict`, which specifies the topology of the network.
+## Generate an `inplace_dict`, which specifies the topology of the network.
 * Rules for the `inplace_dict`:
   * The data format of the `inplace_dict` are defined as a Python `dict`. Each key is the name of a Conv2D or BN2D layer to be pruned. Each value is a tuple, including the names of all input layers to the key. The input to the first layer is None.
   * Keys of `inplace_dict` only contain the layers to be pruned. Layers without pruning should not be included as keys but can be in the tuple of values if needed. Note that the last layer of a backone usually does not require pruning.
@@ -148,7 +164,7 @@
 ```
 
 
-3. Load the generated mask and use the `inplace_dict` to export model.
+## Load the generated mask and use the `inplace_dict` to export model.
 * Get the pruned model using the mask:
 ```python
     # load mask and export your network using the following functions  
