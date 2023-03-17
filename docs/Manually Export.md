@@ -1,6 +1,6 @@
 # Manually export your pruned network
 
-1. Load your pre-trained network and define the pruner to automatically wrap modules with mask.
+1. Load your pre-trained network and define the pruner to automatically wrap modules with mask. 
 ```python
     # get YourPretarinedNetwork and load pre-trained weights for it
     model = YourPretarinedNetwork(args).to(device)
