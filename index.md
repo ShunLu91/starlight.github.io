@@ -4,4 +4,4 @@ layout: home
 nav_order: 1
 ---
 
-StarLight aims to lightweight deep neural networks and mainly includes three modules: network compression, neural architecture search, and visualization. The network compression module transforms a pre-trained network into a lightweight structure by utilizing pruning and quantization techniques. The neural architecture search module designs efficient structures by utilizing differentiable architecture search methods. All of the aforementioned processes can be displayed in the visualization window, and we also provide visualizations of network intermediate features.
+StarLight helps in obtaining lightweight deep neural networks. StarLight consists primarily of three modules: network compression, neural architecture search, and visualization. The network compression module uses pruning and quantization techniques to convert a pre-trained network into a lightweight structure. The neural architecture search module designs efficient structures by utilizing differentiable architecture search methods. The visualization window can display all of the aforementioned processes, as well as visualizations of network intermediate features.
